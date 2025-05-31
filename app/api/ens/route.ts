@@ -2,9 +2,14 @@ import { NextResponse } from 'next/server';
 import { ethers } from 'ethers';
 
 // Use Infura as the provider for more reliable ENS resolution
-const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+const provider = new ethers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER);
 
 export async function POST(request: Request) {
+
+  provider.getNetwork().then(net => {
+    console.log("Provider network:", net);
+  });
+
   try {
     const { address } = await request.json();
     
