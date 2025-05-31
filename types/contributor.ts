@@ -17,6 +17,8 @@ export interface ContributorScore {
     volume: number;
     age: number;
     poaps: number;
+    hasEns: boolean;
+    ensMatch: boolean;
     uniqueTransactions: number;
     eventAttendance: number;
   };

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, BadgeCheck, Download, Award, Github, Twitter, Wallet, Medal, Activity, CheckCircle2, XCircle } from "lucide-react";
+import { ArrowLeft, BadgeCheck, Download, Award, Github, Twitter, Wallet, Medal, Activity, CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -67,20 +67,31 @@ export function ScoreResults({ score, onReset }: ScoreResultsProps) {
             Based on your digital identities and contribution history
           </CardDescription>
           {score.user.wallet && (
-            <div className="mt-2 flex items-center gap-2 text-sm">
-              <Wallet className="h-4 w-4" />
-              <span className="font-medium">{score.user.wallet}</span>
+            <div className="mt-3 flex flex-col gap-2 text-sm">
+              <div className="flex flex-row font-medium word-break">
+                <Wallet className="h-4 w-4 font-white" />
+                {score.user.wallet}
+              </div>
               {score.user.ensName ? (
-                <div className="flex items-center gap-1 text-green-500 dark:text-green-400">
+                <div className="flex flex-row items-start gap-1 text-green-500 dark:text-green-400">
                   <CheckCircle2 className="h-4 w-4" />
                   <span>{score.user.ensName}</span>
                 </div>
               ) : (
-                <div className="flex items-center gap-1 text-muted-foreground">
+                <div className="flex flex-row items-start gap-1 text-muted-foreground">
                   <XCircle className="h-4 w-4" />
                   <span>No ENS name found</span>
                 </div>
               )}
+            </div>
+          )}
+          {(score.user.twitter && score.metrics.hasEns && score.metrics.ensMatch) && (
+            <div className="mt-3 flex flex-col items-start gap-2 text-sm">
+              <div className="flex flex-row items-start"><Twitter className="h-4 w-4 font-white" /> + <Wallet className="h-4 w-4 font-white" /></div>
+              <div className="flex flex-row items-start gap-1 text-green-500 dark:text-green-400">
+                <CheckCircle2 className="h-4 w-4" />
+                <span>ENS name is similar to Twitter / X handle.</span>
+              </div>
             </div>
           )}
         </CardHeader>

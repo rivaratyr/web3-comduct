@@ -30,6 +30,7 @@ export async function fetchContributorScore(data: ContributorRequest): Promise<C
       twitterMetrics = twitterData.metrics;
     } catch (error) {
       console.error('Error fetching Twitter data:', error);
+      data.twitter = undefined; // Reset Twitter handle if fetch fails
     }
   }
 
@@ -123,6 +124,8 @@ export async function fetchContributorScore(data: ContributorRequest): Promise<C
   const transactions = data.wallet ? Math.floor((walletScore / 30) * 200) + 20 : 0;
   const volume = data.wallet ? Math.floor((walletScore / 30) * 10000) + 500 : 0;
   const age = data.wallet ? Math.floor((walletScore / 30) * 500) + 30 : 0;
+  const hasEns = !!ensName; // Initialize hasEns based on the presence of ensName
+  const ensMatch = hasEns && data.twitter ? data.twitter.toLowerCase().includes(ensName.replace('.eth', '').toLowerCase()) : false;
   
   // POAP and Transaction specific metrics
   const poaps = poapMetrics?.totalPoaps || 0;
@@ -186,6 +189,8 @@ export async function fetchContributorScore(data: ContributorRequest): Promise<C
       engagement,
       transactions,
       volume,
+      hasEns,
+      ensMatch,
       age,
       poaps,
       uniqueTransactions,
